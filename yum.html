@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<!-- El DOCTYPE le dice al navegador "esto es HTML5" -->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <!-- UTF-8 permite usar tildes, ñ, etc. sin que se vean símbolos raros -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- esto hace que la página se adapte bien a celulares -->
+    <title>Mi Primera Página Web</title>
+
+    <style>
+        /* ===== ESTILOS GENERALES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --sidebar-ancho: 230px;
+            --header-alto: 74px;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #9c7979;
+            background-color: #fdf6fc;
+            overflow-x: hidden;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cellipse cx='10' cy='11' rx='7' ry='9' fill='%23f7a8d7' stroke='%234a3f35' stroke-width='1.4' transform='rotate(-30 10 11)'/%3E%3Cellipse cx='22' cy='11' rx='7' ry='9' fill='%23b8e3ff' stroke='%234a3f35' stroke-width='1.4' transform='rotate(30 22 11)'/%3E%3Cellipse cx='11' cy='22' rx='5' ry='7' fill='%23ffd6a5' stroke='%234a3f35' stroke-width='1.2' transform='rotate(28 11 22)'/%3E%3Cellipse cx='21' cy='22' rx='5' ry='7' fill='%23c8f7c5' stroke='%234a3f35' stroke-width='1.2' transform='rotate(-28 21 22)'/%3E%3Cellipse cx='16' cy='17' rx='2.5' ry='8' fill='%234a3f35'/%3E%3Ccircle cx='16' cy='8' r='2.5' fill='%234a3f35'/%3E%3Cpath d='M14.5 6 C11 2, 9 2, 7 4 M17.5 6 C21 2, 23 2, 25 4' fill='none' stroke='%234a3f35' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E") 16 16, auto;
+        }
+
+        .pagina {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== ENCABEZADO Y NAVEGACIÓN ===== */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            min-height: var(--header-alto);
+            background-color: #4a3f35;
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== PERSONAJE ANIME DECORATIVO ===== */
+        .personaje-anime {
+            position: absolute;
+            right: 1rem;
+            bottom: -5.5rem;
+            z-index: 4;
+            width: min(150px, 28vw);
+            height: auto;
+            pointer-events: none;
+            filter: drop-shadow(0 8px 12px rgba(74, 63, 53, 0.25));
+        }
+
+        /* ===== RASTRO DE ESTRELLITAS ===== */
+        .estrella-rastro {
+            position: fixed;
+            z-index: 9999;
+            pointer-events: none;
+            color: #ffd166;
+            font-size: 1rem;
+            text-shadow: 0 0 8px rgba(255, 209, 102, 0.8);
+            animation: desaparecer-estrella 0.8s ease-out forwards;
+        }
+
+        @keyframes desaparecer-estrella {
+            from {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+            }
+
+            to {
+                opacity: 0;
+                transform: translate(-50%, -90%) scale(0.2) rotate(120deg);
+            }
+        }
+
+        /* ===== SECCIÓN PRINCIPAL (HERO) ===== */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: #ead7eb;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: transparent;
+            background: linear-gradient(90deg, #ff4f8b, #ff9f1c, #5fbf5f, #2d9cdb, #9b5de5);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 600;
+            color: transparent;
+            background: linear-gradient(90deg, #9b5de5, #2d9cdb, #5fbf5f, #ff9f1c, #ff4f8b);
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        /* ===== SECCIONES GENERALES ===== */
+        section {
+            padding: 3rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        section h2 {
+            margin-bottom: 1rem;
+            color: #4a3f35;
+        }
+
+        /* ===== BARRA LATERAL ===== */
+        .datos-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 5;
+            width: var(--sidebar-ancho);
+            height: 100vh;
+            overflow-y: auto;
+            margin: 0;
+            padding: calc(var(--header-alto) + 1rem) 1.2rem 1.2rem;
+            border-right: 2px solid #ead7eb;
+            border-radius: 0;
+            background-color: #fff8fd;
+            box-shadow: 6px 0 18px rgba(74, 63, 53, 0.06);
+        }
+
+        .datos-sidebar h2 {
+            margin-bottom: 1rem;
+            color: #4a3f35;
+            font-size: 1.2rem;
+        }
+
+        .dato {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #ead7eb;
+        }
+
+        .dato h3 {
+            margin-bottom: 0.35rem;
+            color: #4a3f35;
+            font-size: 1rem;
+        }
+
+        .dato p {
+            font-size: 0.92rem;
+        }
+
+        .contenido-principal {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            width: calc(100% - var(--sidebar-ancho));
+            margin-left: var(--sidebar-ancho);
+            min-width: 0;
+        }
+
+        /* ===== FRASES LINDAS Y CLIMA ===== */
+        .frases-panel {
+            display: block;
+        }
+
+        .frases-cuadro {
+            position: relative;
+            min-height: 430px;
+            overflow: hidden;
+            border: 2px solid #e5bfdc;
+            border-radius: 8px;
+            background-color: #fff8fd;
+            box-shadow: 0 8px 18px rgba(74, 63, 53, 0.08);
+        }
+
+        .frases-carril {
+            position: absolute;
+            inset: 0 0 42% 0;
+            overflow: hidden;
+        }
+
+        .frase-animada {
+            position: absolute;
+            left: 100%;
+            top: var(--top);
+            width: max-content;
+            color: #4a3f35;
+            font-size: 1.35rem;
+            font-weight: 700;
+            line-height: 1.35;
+            white-space: nowrap;
+            animation: pasar-frase var(--duracion) linear infinite;
+            animation-delay: var(--delay);
+        }
+
+        @keyframes pasar-frase {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(calc(var(--recorrido) * -1px));
+            }
+        }
+
+        .clima-grid {
+            position: absolute;
+            left: 1rem;
+            right: 1rem;
+            bottom: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 0.8rem;
+        }
+
+        .clima-card {
+            min-height: 120px;
+            padding: 0.9rem;
+            border: 1px solid #ead7eb;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 5px 12px rgba(74, 63, 53, 0.06);
+        }
+
+        .clima-card h3 {
+            margin-bottom: 0.45rem;
+            color: #4a3f35;
+            font-size: 1rem;
+        }
+
+        .clima-card p {
+            margin-bottom: 0.25rem;
+            color: #9c7979;
+            font-size: 0.95rem;
+        }
+
+        /* ===== INTERESES ===== */
+        .intereses-bts {
+            padding: 0;
+        }
+
+        .intereses-bts h3 {
+            margin-bottom: 0.8rem;
+            color: #4a3f35;
+            font-size: 1.4rem;
+        }
+
+        .intereses-bts p {
+            margin-bottom: 0.8rem;
+        }
+
+        .intereses-bts ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .intereses-bts li {
+            padding: 0.4rem 0.75rem;
+            border-radius: 999px;
+            color: #4a3f35;
+            background-color: #f2d8ec;
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        /* ===== MINI RADIO ===== */
+        .mini-radio {
+            position: relative;
+            overflow: visible;
+            margin-top: 2rem;
+            padding: 1.2rem;
+            border-radius: 8px;
+            background: linear-gradient(120deg, #fff8fd, #ffe0f1, #e2f4ff, #f6e6ff);
+            background-size: 300% 300%;
+            border: 2px solid #ead7eb;
+            box-shadow: 0 8px 18px rgba(74, 63, 53, 0.08);
+            animation: radio-fondo 8s ease infinite;
+        }
+
+        .mini-radio .gatito-pista {
+            top: -62px;
+            z-index: 3;
+        }
+
+        .mini-radio::before {
+            content: "";
+            position: absolute;
+            inset: -40%;
+            background:
+                radial-gradient(circle, rgba(255, 255, 255, 0.8) 0 8%, transparent 9%),
+                radial-gradient(circle, rgba(255, 143, 171, 0.45) 0 7%, transparent 8%),
+                radial-gradient(circle, rgba(123, 223, 242, 0.45) 0 7%, transparent 8%);
+            background-size: 90px 90px, 130px 130px, 170px 170px;
+            animation: radio-brillos 12s linear infinite;
+            pointer-events: none;
+            clip-path: inset(40%);
+        }
+
+        @keyframes radio-fondo {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes radio-brillos {
+            from {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            to {
+                transform: translate(60px, 40px) rotate(12deg);
+            }
+        }
+
+        .radio-cabecera {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .radio-cabecera h3 {
+            margin: 0;
+            color: #4a3f35;
+            font-size: 1.2rem;
+        }
+
+        .radio-pista {
+            color: #9c7979;
+            font-weight: 700;
+        }
+
+        .radio-controles {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.7rem;
+        }
+
+        .radio-controles button {
+            width: 46px;
+            height: 46px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border-radius: 50%;
+            font-size: 1.25rem;
+            line-height: 1;
+            font-weight: 700;
+        }
+
+        /* ===== GALERÍA ===== */
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .galeria-grid img {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+        }
+
+        /* ===== FORMULARIO DE CONTACTO ===== */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 400px;
+        }
+
+        label {
+            font-weight: 500;
+        }
+
+        input, textarea {
+            padding: 0.6rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        button {
+            background-color: #4a3f35;
+            color: #fff;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button:hover {
+            background-color: #6b594a;
+        }
+
+        /* ===== PIE DE PÁGINA ===== */
+        footer {
+            position: relative;
+            z-index: 30;
+            text-align: center;
+            min-height: 78px;
+            padding: 1.5rem;
+            background-color: #4a3f35;
+            color: #fff;
+        }
+
+        /* ===== MASCOTA VIRTUAL ===== */
+        .gatito-pista {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -56px;
+            height: 58px;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        .gatito {
+            position: absolute;
+            left: -90px;
+            bottom: 0;
+            width: 96px;
+            height: 64px;
+            pointer-events: auto;
+            animation: correr-gatito 28s linear infinite;
+        }
+
+        .gatito::after {
+            content: "*";
+            position: absolute;
+            left: -12px;
+            top: 18px;
+            color: #ffd166;
+            text-shadow: 0 0 8px rgba(255, 209, 102, 0.9);
+            animation: estrella-gatito 0.7s ease-out infinite;
+        }
+
+        .gatito:hover {
+            animation-play-state: paused;
+            transform: translateY(-8px) rotate(-6deg);
+        }
+
+        .gatito-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.18));
+            animation: saltito-gatito 0.8s ease-in-out infinite alternate;
+        }
+
+        .gatito-pierna-delantera {
+            transform-origin: 61px 48px;
+            animation: pierna-delantera 0.55s ease-in-out infinite alternate;
+        }
+
+        .gatito-pierna-trasera {
+            transform-origin: 32px 48px;
+            animation: pierna-trasera 0.55s ease-in-out infinite alternate;
+        }
+
+        .gatito-svg .cola-svg {
+            transform-origin: 25px 34px;
+            animation: cola-svg 0.8s ease-in-out infinite alternate;
+        }
+
+        .gatito:hover .gatito-cola {
+            transform: rotate(-35deg);
+        }
+
+        .gatito:hover::before {
+            content: "Hola Humano";
+            position: absolute;
+            left: 50%;
+            bottom: 54px;
+            width: max-content;
+            padding: 0.3rem 0.55rem;
+            border-radius: 999px;
+            color: #4a3f35;
+            background-color: #fff8fd;
+            font-size: 0.75rem;
+            transform: translateX(-50%);
+        }
+
+        .gatito-cuerpo,
+        .gatito-cabeza,
+        .gatito-cola,
+        .gatito-pata {
+            position: absolute;
+            display: block;
+            background-color: #f7c6d9;
+        }
+
+        .gatito-cuerpo {
+            left: 18px;
+            bottom: 10px;
+            width: 42px;
+            height: 26px;
+            border-radius: 22px 22px 18px 18px;
+        }
+
+        .gatito-cabeza {
+            right: 0;
+            bottom: 20px;
+            width: 28px;
+            height: 26px;
+            border-radius: 50%;
+        }
+
+        .gatito-oreja {
+            position: absolute;
+            top: -7px;
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-bottom: 12px solid #f7c6d9;
+        }
+
+        .gatito-oreja.izquierda {
+            left: 1px;
+            transform: rotate(-18deg);
+        }
+
+        .gatito-oreja.derecha {
+            right: 1px;
+            transform: rotate(18deg);
+        }
+
+        .gatito-ojo {
+            position: absolute;
+            top: 10px;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: #4a3f35;
+        }
+
+        .ojo-izquierdo {
+            left: 8px;
+        }
+
+        .ojo-derecho {
+            right: 8px;
+        }
+
+        .gatito-nariz {
+            position: absolute;
+            left: 12px;
+            top: 16px;
+            width: 5px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: #ff8fab;
+        }
+
+        .gatito-cola {
+            left: 0;
+            bottom: 25px;
+            width: 26px;
+            height: 8px;
+            border-radius: 999px;
+            transform-origin: right center;
+            transform: rotate(25deg);
+            animation: mover-cola 0.45s ease-in-out infinite alternate;
+        }
+
+        .gatito-pata {
+            bottom: 4px;
+            width: 8px;
+            height: 14px;
+            border-radius: 999px;
+            animation: correr-patita 0.28s ease-in-out infinite alternate;
+        }
+
+        .pata-1 {
+            left: 28px;
+        }
+
+        .pata-2 {
+            left: 48px;
+            animation-delay: 0.14s;
+        }
+
+        @keyframes correr-gatito {
+            from {
+                left: -90px;
+            }
+
+            to {
+                left: calc(100% + 90px);
+            }
+        }
+
+        @keyframes saltito-gatito {
+            from {
+                transform: translateY(0);
+            }
+
+            to {
+                transform: translateY(-3px);
+            }
+        }
+
+        @keyframes pierna-delantera {
+            from {
+                transform: rotate(12deg);
+            }
+
+            to {
+                transform: rotate(-12deg);
+            }
+        }
+
+        @keyframes pierna-trasera {
+            from {
+                transform: rotate(-12deg);
+            }
+
+            to {
+                transform: rotate(12deg);
+            }
+        }
+
+        @keyframes cola-svg {
+            from {
+                transform: rotate(-5deg);
+            }
+
+            to {
+                transform: rotate(14deg);
+            }
+        }
+
+        @keyframes correr-patita {
+            from {
+                transform: rotate(18deg);
+            }
+
+            to {
+                transform: rotate(-18deg);
+            }
+        }
+
+        @keyframes mover-cola {
+            from {
+                transform: rotate(15deg);
+            }
+
+            to {
+                transform: rotate(38deg);
+            }
+        }
+
+        @keyframes estrella-gatito {
+            from {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                opacity: 0;
+                transform: translate(-22px, -14px) scale(0.2);
+            }
+        }
+
+        /* ===== RESPONSIVE: para pantallas medianas y chicas ===== */
+        @media (max-width: 900px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                min-height: auto;
+            }
+
+            .datos-sidebar {
+                position: static;
+                width: auto;
+                height: auto;
+                max-height: none;
+                margin: 0;
+                padding: 1.2rem;
+                border-right: none;
+                border-radius: 0;
+                border-bottom: 2px solid #ead7eb;
+            }
+
+            .contenido-principal {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+
+            .frases-cuadro {
+                min-height: 620px;
+            }
+
+            .clima-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="pagina">
+
+    <!-- ===== ENCABEZADO ===== -->
+    <header>
+        <h1>Genesis</h1>
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#galeria">Galería</a></li>
+                <li><a href="#sobre-mi">Sobre mí</a></li>
+                <li><a href="#intereses">Frases lindas</a></li>
+                <li><a href="#radio">Radio</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <aside class="datos-sidebar">
+        <h2>Datos curiosos</h2>
+
+        <article class="dato">
+            <h3>Plantas</h3>
+            <p>Las plantas pueden inclinarse hacia la luz para crecer mejor.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Gatos</h3>
+            <p>Los gatos usan sus bigotes para calcular espacios y moverse con precisión.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Plantas</h3>
+            <p>Algunas plantas cierran sus hojas de noche como si estuvieran descansando.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Gatos</h3>
+            <p>El ronroneo puede aparecer cuando un gato está cómodo, pero también cuando busca calmarse.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Plantas</h3>
+            <p>Las raíces ayudan a la planta a tomar agua, nutrientes y sostenerse en la tierra.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Gatos</h3>
+            <p>Los gatos duermen muchas horas porque conservan energía para momentos de actividad.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Plantas</h3>
+            <p>La menta crece rápido y puede expandirse mucho si tiene espacio y buena luz.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Gatos</h3>
+            <p>Los gatos pueden reconocer la voz de su persona favorita, aunque no siempre respondan.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Plantas</h3>
+            <p>El aloe vera guarda agua en sus hojas, por eso resiste mejor los días secos.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Gatos</h3>
+            <p>Cuando un gato amasa con sus patitas, suele ser una señal de comodidad y confianza.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Plantas</h3>
+            <p>Las hojas ayudan a captar luz para producir energía mediante la fotosíntesis.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Gatos</h3>
+            <p>La cola de un gato puede mostrar su ánimo: alta suele indicar curiosidad o seguridad.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Plantas</h3>
+            <p>Algunas flores se abren de día y se cierran al anochecer para protegerse.</p>
+        </article>
+
+        <article class="dato">
+            <h3>Gatos</h3>
+            <p>Los gatos tienen una visión nocturna muy buena, ideal para moverse con poca luz.</p>
+        </article>
+    </aside>
+
+    <main class="contenido-principal">
+
+    <!-- ===== SECCIÓN PRINCIPAL (HERO) ===== -->
+    <section id="inicio" class="hero">
+        <h2>¡Hola! Esta es mi primera página web</h2>
+        <p>La hice para practicar HTML y CSS. Cada sección de aquí abajo usa una etiqueta o estilo diferente, así que puedes ir cambiando cosas y ver qué pasa.</p>
+    </section>
+
+    <!-- ===== GALERÍA (IMÁGENES) ===== -->
+    <section id="galeria">
+        <h2>Galería</h2>
+        <div class="galeria-grid">
+            <img src="https://2.bp.blogspot.com/-AgxnE-2rxfQ/VZFTrn67CCI/AAAAAAAABac/UMDZDWOXBk0/s320/tumblr_ndni8hsids1u1nuzeo1_500.gif" alt="Paisaje de montaña">
+            <img src="https://media.tenor.com/rRtF6t_8yFYAAAAj/kawaii-cat-playing-cat.gif" alt="Gato kawaii jugando">
+            <img src="https://66.media.tumblr.com/9a0e029e90cb1822b13d0595fb174d97/tumblr_mj3hhaksaI1rfjowdo1_500.gif" alt="Camino entre árboles">
+        </div>
+    </section>
+
+    <!-- ===== SOBRE MÍ ===== -->
+    <section id="sobre-mi">
+        <h2>Sobre mí</h2>
+        <p>
+            Soy Genesis, una persona curiosa, creativa y con ganas de aprender cosas nuevas.
+            Me gusta experimentar con colores, detalles lindos y pequeñas ideas que hacen que
+            una página se sienta más personal. Estoy practicando HTML y CSS paso a paso, y esta
+            web es parte de mi forma de aprender, probar y crear algo que tenga mi estilo.
+        </p>
+    </section>
+
+    <!-- ===== FRASES LINDAS ===== -->
+    <section id="intereses" class="intereses">
+        <h2>Frases lindas</h2>
+        <div class="frases-panel">
+            <div class="frases-cuadro" id="frases-cuadro" aria-label="Frases lindas y clima en vivo">
+                <div class="frases-carril" id="frases-carril"></div>
+                <div class="clima-grid" id="clima-grid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== INTERESES ===== -->
+    <section id="bts" class="intereses">
+        <h2>Intereses</h2>
+        <div class="intereses-bts">
+            <h3>BTS</h3>
+            <p>
+                BTS es un grupo surcoreano conocido por su música, sus presentaciones y los mensajes positivos
+                que comparten en muchas de sus canciones. Sus letras suelen hablar de sueños, amistad, amor propio
+                y de seguir adelante incluso cuando las cosas se ponen difíciles.
+            </p>
+            <p>
+                También son muy queridos por la conexión que tienen con ARMY, su fandom, y por cómo mezclan estilos
+                como pop, hip hop, R&B y baladas en una misma identidad musical.
+            </p>
+            <ul>
+                <li>Música</li>
+                <li>Amor propio</li>
+                <li>Baile</li>
+                <li>Creatividad</li>
+                <li>ARMY</li>
+            </ul>
+        </div>
+
+        <div class="mini-radio" id="radio">
+            <img
+                class="personaje-anime"
+                src="https://thfvnext.bing.com/th/id/R.0fde6acd820f480aaa54e11f1e6ae591?rik=Uv5sXanXACG3og&pid=ImgRaw&r=0"
+                alt="Personaje anime chibi"
+            >
+
+            <div class="gatito-pista" aria-label="Mascota virtual gatito">
+                <div class="gatito" id="gatito-mascota">
+                    <svg class="gatito-svg" viewBox="0 0 96 64" role="img" aria-label="Gatito corriendo">
+                        <path class="cola-svg" d="M28 35 C12 26, 8 14, 17 10 C25 6, 27 18, 22 23" fill="none" stroke="#f7b4d2" stroke-width="8" stroke-linecap="round"/>
+                        <ellipse cx="46" cy="38" rx="28" ry="18" fill="#f7c6d9"/>
+                        <path d="M24 30 C27 22, 34 18, 43 18" fill="none" stroke="#fff1f8" stroke-width="4" stroke-linecap="round"/>
+                        <circle cx="70" cy="28" r="17" fill="#f7c6d9"/>
+                        <path d="M58 17 L61 4 L70 15 Z" fill="#f7c6d9"/>
+                        <path d="M75 15 L85 5 L86 20 Z" fill="#f7c6d9"/>
+                        <path d="M62 15 L64 8 L69 15 Z" fill="#ffedf6"/>
+                        <path d="M77 15 L84 10 L84 18 Z" fill="#ffedf6"/>
+                        <circle cx="65" cy="27" r="2.6" fill="#4a3f35"/>
+                        <circle cx="76" cy="27" r="2.6" fill="#4a3f35"/>
+                        <path d="M70 32 L73 32.5 L71 35 Z" fill="#ff7fa8"/>
+                        <path d="M58 33 C51 31, 47 31, 42 34" fill="none" stroke="#e9a9c4" stroke-width="2.5" stroke-linecap="round"/>
+                        <path class="gatito-pierna-trasera" d="M33 51 L25 60" fill="none" stroke="#f7b4d2" stroke-width="7" stroke-linecap="round"/>
+                        <path class="gatito-pierna-delantera" d="M60 51 L69 59" fill="none" stroke="#f7b4d2" stroke-width="7" stroke-linecap="round"/>
+                        <circle cx="30" cy="58" r="4" fill="#ffedf6"/>
+                        <circle cx="68" cy="58" r="4" fill="#ffedf6"/>
+                        <path d="M59 35 C53 32, 47 32, 40 35" fill="none" stroke="#fff1f8" stroke-width="3" stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="radio-cabecera">
+                <h3>Mini radio K-pop</h3>
+                <span class="radio-pista" id="radio-pista">Dream Pop</span>
+            </div>
+            <div class="radio-controles">
+                <button type="button" id="radio-play" aria-label="Reproducir">▶</button>
+                <button type="button" id="radio-pausa" aria-label="Pausar">Ⅱ</button>
+                <button type="button" id="radio-siguiente" aria-label="Siguiente">⏭</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FORMULARIO DE CONTACTO ===== -->
+
+    </main>
+
+    <!-- ===== PIE DE PÁGINA ===== -->
+    <footer>
+        <p>&copy; 2026 - Mi primera página web. Hecha mientras aprendía HTML y CSS.</p>
+    </footer>
+
+    </div>
+
+    <script>
+        const frasesLindas = [
+            'Eres capaz de crear cosas hermosas paso a paso.',
+            'Cada día trae una oportunidad pequeña para florecer.',
+            'Tu ternura también es una forma de fuerza.',
+            'Las cosas lindas también cuentan como progreso.',
+            'Que hoy encuentres calma en algo simple.',
+            'Aprender poquito a poco también es avanzar mucho.'
+        ];
+
+        const lugaresDelMundo = [
+            { nombre: 'Asunción', pais: 'Paraguay', lat: -25.2637, lon: -57.5759 },
+            { nombre: 'Tokio', pais: 'Japón', lat: 35.6762, lon: 139.6503 },
+            { nombre: 'París', pais: 'Francia', lat: 48.8566, lon: 2.3522 },
+            { nombre: 'Reikiavik', pais: 'Islandia', lat: 64.1466, lon: -21.9426 },
+            { nombre: 'Ciudad del Cabo', pais: 'Sudáfrica', lat: -33.9249, lon: 18.4241 },
+            { nombre: 'Vancouver', pais: 'Canadá', lat: 49.2827, lon: -123.1207 },
+            { nombre: 'Sídney', pais: 'Australia', lat: -33.8688, lon: 151.2093 },
+            { nombre: 'Lima', pais: 'Perú', lat: -12.0464, lon: -77.0428 }
+        ];
+
+        const frasesCarril = document.getElementById('frases-carril');
+        const climaGrid = document.getElementById('clima-grid');
+        const simbolosEstrella = ['*', '+', '✦'];
+        let ultimoRastro = 0;
+
+        const cancionesRadio = [
+            {
+                nombre: 'Dream Pop',
+                notas: [523.25, 659.25, 783.99, 659.25, 587.33, 698.46, 880, 698.46],
+                bajo: [130.81, 130.81, 196, 196]
+            },
+            {
+                nombre: 'Neon Beat',
+                notas: [493.88, 622.25, 739.99, 830.61, 739.99, 622.25, 554.37, 622.25],
+                bajo: [123.47, 164.81, 185, 164.81]
+            },
+            {
+                nombre: 'Pink Stage',
+                notas: [587.33, 739.99, 880, 987.77, 880, 739.99, 659.25, 739.99],
+                bajo: [146.83, 146.83, 220, 196]
+            }
+        ];
+
+        const busquedasRadio = ['BTS k-pop', 'BLACKPINK', 'TWICE', 'NewJeans', 'Stray Kids', 'SEVENTEEN'];
+
+        const radioPista = document.getElementById('radio-pista');
+        const radioPlay = document.getElementById('radio-play');
+        const radioPausa = document.getElementById('radio-pausa');
+        const radioSiguiente = document.getElementById('radio-siguiente');
+        const gatitoMascota = document.getElementById('gatito-mascota');
+
+        const radioAudio = new Audio();
+        let pistasApi = [];
+        let audioContexto;
+        let radioTimer;
+        let radioPaso = 0;
+        let pistaActual = 0;
+        let radioActiva = false;
+
+        function crearEstrellaRastro(event) {
+            const ahora = Date.now();
+
+            if (ahora - ultimoRastro < 45) {
+                return;
+            }
+
+            ultimoRastro = ahora;
+
+            const estrella = document.createElement('span');
+            estrella.className = 'estrella-rastro';
+            estrella.textContent = simbolosEstrella[Math.floor(Math.random() * simbolosEstrella.length)];
+            estrella.style.left = `${event.clientX}px`;
+            estrella.style.top = `${event.clientY}px`;
+            estrella.style.color = ['#ffd166', '#ff8fab', '#9b5de5', '#7bdff2'][Math.floor(Math.random() * 4)];
+            document.body.appendChild(estrella);
+
+            estrella.addEventListener('animationend', () => {
+                estrella.remove();
+            });
+        }
+
+        function crearEstrellaEnPunto(x, y) {
+            const estrella = document.createElement('span');
+            estrella.className = 'estrella-rastro';
+            estrella.textContent = simbolosEstrella[Math.floor(Math.random() * simbolosEstrella.length)];
+            estrella.style.left = `${x}px`;
+            estrella.style.top = `${y}px`;
+            estrella.style.color = ['#ffd166', '#ff8fab', '#9b5de5', '#7bdff2'][Math.floor(Math.random() * 4)];
+            document.body.appendChild(estrella);
+
+            estrella.addEventListener('animationend', () => {
+                estrella.remove();
+            });
+        }
+
+        function crearEstrellasDelGatito() {
+            if (!gatitoMascota) {
+                return;
+            }
+
+            const caja = gatitoMascota.getBoundingClientRect();
+
+            if (caja.right < 0 || caja.left > window.innerWidth) {
+                return;
+            }
+
+            crearEstrellaEnPunto(caja.left + 8, caja.top + caja.height - 8);
+        }
+
+        function jugarConGatito() {
+            const caja = gatitoMascota.getBoundingClientRect();
+
+            for (let i = 0; i < 8; i += 1) {
+                crearEstrellaEnPunto(
+                    caja.left + Math.random() * caja.width,
+                    caja.top + Math.random() * caja.height
+                );
+            }
+        }
+
+        async function iniciarAudio() {
+            if (!audioContexto) {
+                audioContexto = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (audioContexto.state === 'suspended') {
+                await audioContexto.resume();
+            }
+        }
+
+        function tocarNota(frecuencia, duracion, tipo, volumen) {
+            const oscilador = audioContexto.createOscillator();
+            const ganancia = audioContexto.createGain();
+
+            oscilador.type = tipo;
+            oscilador.frequency.value = frecuencia;
+            ganancia.gain.setValueAtTime(0.0001, audioContexto.currentTime);
+            ganancia.gain.exponentialRampToValueAtTime(volumen, audioContexto.currentTime + 0.02);
+            ganancia.gain.exponentialRampToValueAtTime(0.0001, audioContexto.currentTime + duracion);
+
+            oscilador.connect(ganancia);
+            ganancia.connect(audioContexto.destination);
+            oscilador.start();
+            oscilador.stop(audioContexto.currentTime + duracion);
+        }
+
+        function tocarBeat() {
+            const cancion = cancionesRadio[pistaActual];
+            const nota = cancion.notas[radioPaso % cancion.notas.length];
+            const bajo = cancion.bajo[radioPaso % cancion.bajo.length];
+
+            tocarNota(nota, 0.2, 'triangle', 0.22);
+
+            if (radioPaso % 2 === 0) {
+                tocarNota(bajo, 0.18, 'sine', 0.16);
+            }
+
+            if (radioPaso % 4 === 0) {
+                tocarNota(70, 0.08, 'square', 0.1);
+            }
+
+            radioPaso += 1;
+        }
+
+        async function reproducirRadio() {
+            radioActiva = true;
+
+            if (pistasApi.length > 0) {
+                const pista = pistasApi[pistaActual];
+                clearInterval(radioTimer);
+                radioAudio.src = pista.preview;
+                radioPista.textContent = `${pista.nombre} sonando`;
+                radioAudio.play().catch(async () => {
+                    await iniciarAudio();
+                    radioPista.textContent = `${cancionesRadio[0].nombre} sonando`;
+                    tocarBeat();
+                    radioTimer = setInterval(tocarBeat, 260);
+                });
+                return;
+            }
+
+            await iniciarAudio();
+            radioPista.textContent = `${cancionesRadio[pistaActual].nombre} sonando`;
+            clearInterval(radioTimer);
+            tocarBeat();
+            radioTimer = setInterval(tocarBeat, 260);
+        }
+
+        function pausarRadio() {
+            radioActiva = false;
+            clearInterval(radioTimer);
+            radioAudio.pause();
+            radioPista.textContent = `${pistasApi[pistaActual]?.nombre || cancionesRadio[pistaActual].nombre} en pausa`;
+        }
+
+        function siguientePista() {
+            const cantidadPistas = pistasApi.length || cancionesRadio.length;
+            pistaActual = (pistaActual + 1) % cantidadPistas;
+            radioPaso = 0;
+            radioPista.textContent = pistasApi[pistaActual]?.nombre || cancionesRadio[pistaActual].nombre;
+
+            if (radioActiva) {
+                reproducirRadio();
+            }
+        }
+
+        function buscarEnDeezer(busqueda) {
+            return new Promise((resolve, reject) => {
+                const callback = `deezerCallback${Date.now()}${Math.floor(Math.random() * 1000)}`;
+                const script = document.createElement('script');
+
+                window[callback] = (respuesta) => {
+                    script.remove();
+                    delete window[callback];
+                    resolve(respuesta.data || []);
+                };
+
+                script.onerror = () => {
+                    script.remove();
+                    delete window[callback];
+                    reject(new Error('No se pudo conectar con la API'));
+                };
+
+                script.src = `https://api.deezer.com/search?q=${encodeURIComponent(busqueda)}&limit=5&output=jsonp&callback=${callback}`;
+                document.body.appendChild(script);
+            });
+        }
+
+        async function cargarPistasApi() {
+            radioPista.textContent = 'Cargando radio...';
+
+            try {
+                const resultados = await Promise.all(busquedasRadio.map(buscarEnDeezer));
+
+                pistasApi = resultados
+                    .flat()
+                    .filter((pista) => pista.preview)
+                    .map((pista) => ({
+                        nombre: `${pista.artist.name} - ${pista.title}`,
+                        preview: pista.preview
+                    }));
+
+                radioPista.textContent = pistasApi[0]?.nombre || cancionesRadio[0].nombre;
+            } catch (error) {
+                radioPista.textContent = `${cancionesRadio[0].nombre} listo`;
+            }
+        }
+
+        function mostrarFrases() {
+            frasesLindas.forEach((texto, index) => {
+                const frase = document.createElement('span');
+                frase.className = 'frase-animada';
+                frase.textContent = texto;
+                frase.style.setProperty('--top', `${12 + (index % 5) * 17}%`);
+                frase.style.setProperty('--duracion', `${16 + (index % 3) * 4}s`);
+                frase.style.setProperty('--delay', `${index * -4}s`);
+                frasesCarril.appendChild(frase);
+            });
+
+            actualizarRecorridoFrases();
+        }
+
+        function actualizarRecorridoFrases() {
+            document.querySelectorAll('.frase-animada').forEach((frase) => {
+                const recorrido = frasesCarril.offsetWidth + frase.offsetWidth;
+                frase.style.setProperty('--recorrido', recorrido);
+            });
+        }
+
+        function elegirLugaresAleatorios(cantidad) {
+            return [...lugaresDelMundo]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, cantidad);
+        }
+
+        function crearTarjetaClima(lugar, contenido) {
+            const tarjeta = document.createElement('article');
+            tarjeta.className = 'clima-card';
+            tarjeta.innerHTML = `
+                <h3>${lugar.nombre}</h3>
+                <p>${lugar.pais}</p>
+                ${contenido}
+            `;
+            climaGrid.appendChild(tarjeta);
+        }
+
+        async function cargarClima() {
+            const lugares = elegirLugaresAleatorios(4);
+            climaGrid.innerHTML = '';
+
+            lugares.forEach((lugar) => {
+                crearTarjetaClima(lugar, '<p>Cargando clima...</p>');
+            });
+
+            await Promise.all(lugares.map(async (lugar, index) => {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lugar.lat}&longitude=${lugar.lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m&timezone=auto`;
+
+                try {
+                    const respuesta = await fetch(url);
+                    const datos = await respuesta.json();
+                    const clima = datos.current;
+                    const tarjeta = climaGrid.children[index];
+
+                    tarjeta.innerHTML = `
+                        <h3>${lugar.nombre}</h3>
+                        <p>${lugar.pais}</p>
+                        <p>Temperatura: ${Math.round(clima.temperature_2m)}°C</p>
+                        <p>Humedad: ${clima.relative_humidity_2m}%</p>
+                        <p>Viento: ${Math.round(clima.wind_speed_10m)} km/h</p>
+                    `;
+                } catch (error) {
+                    const tarjeta = climaGrid.children[index];
+                    tarjeta.innerHTML = `
+                        <h3>${lugar.nombre}</h3>
+                        <p>${lugar.pais}</p>
+                        <p>No se pudo cargar el clima.</p>
+                    `;
+                }
+            }));
+        }
+
+        mostrarFrases();
+        cargarClima();
+        cargarPistasApi();
+        setInterval(cargarClima, 10 * 60 * 1000);
+        window.addEventListener('resize', actualizarRecorridoFrases);
+        window.addEventListener('mousemove', crearEstrellaRastro);
+        setInterval(crearEstrellasDelGatito, 420);
+        gatitoMascota.addEventListener('mouseenter', jugarConGatito);
+        radioAudio.addEventListener('ended', siguientePista);
+        radioPlay.addEventListener('click', reproducirRadio);
+        radioPausa.addEventListener('click', pausarRadio);
+        radioSiguiente.addEventListener('click', siguientePista);
+    </script>
+
+</body>
+</html>
